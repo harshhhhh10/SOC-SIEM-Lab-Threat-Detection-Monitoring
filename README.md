@@ -18,19 +18,22 @@ This lab simulates the day-to-day monitoring, triage, and detection engineering 
 ---
 
 ## 🛠️ Lab Architecture
+```text
 ┌────────────────┐               ┌───────────────────────────┐
 │ Attacker       │               │ Victim Machine            │
 │ Kali Linux     │ ────────────> │ Windows 10 Enterprise     │
 │ (10.0.2.X)     │  RDP Brute    │ Sysmon + Win Event Logs   │
 └────────────────┘  PowerShell   └───────────────────────────┘
-│
-│ Log Forwarding
-│ (Port 9997)
-▼┌───────────────────────────┐
-│ SIEM Server               │
-│ Splunk Enterprise (Ubuntu)│
-│ (10.0.2.X)                │
-└───────────────────────────┘
+                                               │
+                                               │ Log Forwarding
+                                               │ (Port 9997)
+                                               ▼
+                                 ┌───────────────────────────┐
+                                 │ SIEM Server               │
+                                 │ Splunk Enterprise (Ubuntu)│
+                                 │ (10.0.2.X)                │
+                                 └───────────────────────────┘
+```
 * **SIEM Server:** Splunk Enterprise (Ubuntu Server)
 * **Log Forwarder:** Splunk Universal Forwarder (Windows 10)
 * **Deep Endpoint Logging:** Sysmon (SwiftOnSecurity Configuration)
@@ -72,6 +75,7 @@ Configured a VirtualBox NAT Network (10.0.2.0/24) allowing all VMs to communicat
 ```splunk
 index=main EventCode=4625
 
+
 | eval Attacker_IP = coalesce(SourceNetworkAddress, IpAddress, Source_Network_Address)
 | stats count as "Failed Logins" by Attacker_IP
 | sort -"Failed Logins"
@@ -87,6 +91,7 @@ index=main EventCode=4625
 ```splunk
 index=main EventCode=1 (_raw="*Bypass*" OR _raw="*Hidden*" OR _raw="*Invoke-WebRequest*")
 
+
 | stats count as "Suspicious Events" by ComputerName, _raw
 | rename ComputerName as "Victim PC", _raw as "Command/Details"
 ```
@@ -100,21 +105,17 @@ index=main EventCode=1 (_raw="*Bypass*" OR _raw="*Hidden*" OR _raw="*Invoke-WebR
 Real-time monitoring dashboard showing brute-force trends, top attacker IPs, and suspicious PowerShell execution.
 <img width="1920" height="1032" alt="SOC_Dashboard_Attack_Monitoring" src="https://github.com/user-attachments/assets/3d8fd0a6-4948-4082-bac7-978b06252f89" />
 
-
 ### Alert Configuration
 Automated Brute Force detection alert configured to trigger on >5 failed logins from a single IP.
 <img width="1920" height="1032" alt="Brute_Force_Alert_Configuration" src="https://github.com/user-attachments/assets/bd1fa45e-0b20-4298-b954-825ce778d920" />
-
 
 ### Raw Log Evidence: Brute Force
 Windows Security Event ID 4625 (Failed Logon) showing the attacker's IP and bad password attempt.
 <img width="1920" height="1032" alt="Failed_Logon_Event_4625" src="https://github.com/user-attachments/assets/4595afe6-1611-4a22-8689-a2d72e9f7f37" />
 
-
 ### Raw Log Evidence: Malicious PowerShell
 Sysmon Event ID 1 capturing the hidden PowerShell execution with the -Exec Bypass flag.
 <img width="1920" height="1032" alt="PowerShell_Raw_Log_Evidence" src="https://github.com/user-attachments/assets/a9c0c5bc-2483-4fc6-a5da-68ec61e780c3" />
-
 
 ---
 
