@@ -1,0 +1,22 @@
+================================================================================
+DETECTION 1: RDP BRUTE FORCE DETECTION (MITRE T1110)
+================================================================================
+Description: Identifies potential RDP brute force attempts via Event ID 4625.
+Threshold: Recommended to alert if count > 5 within a 5-minute window.
+
+index=main EventCode=4625
+
+| eval Attacker_IP = coalesce(SourceNetworkAddress, IpAddress, Source_Network_Address)
+| stats count as "Failed Logins" by Attacker_IP
+| sort -"Failed Logins"
+
+
+================================================================================
+DETECTION 2: SUSPICIOUS POWERSHELL EXECUTION (MITRE T1059.001)
+================================================================================
+Description: Catches hidden process execution or download cradles via Sysmon ID 1.
+
+index=main EventCode=1 (_raw="*Bypass*" OR _raw="*Hidden*" OR _raw="*Invoke-WebRequest*")
+
+| stats count as "Suspicious Events" by ComputerName, _raw
+| rename ComputerName as "Victim PC", _raw as "Command/Details"
