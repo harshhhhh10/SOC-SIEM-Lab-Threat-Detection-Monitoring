@@ -98,19 +98,23 @@ index=main EventCode=1 (_raw="*Bypass*" OR _raw="*Hidden*" OR _raw="*Invoke-WebR
 
 ### SOC Dashboard Overview
 Real-time monitoring dashboard showing brute-force trends, top attacker IPs, and suspicious PowerShell execution.
-*(Add your image here)*
+<img width="1920" height="1032" alt="SOC_Dashboard_Attack_Monitoring" src="https://github.com/user-attachments/assets/3d8fd0a6-4948-4082-bac7-978b06252f89" />
+
 
 ### Alert Configuration
 Automated Brute Force detection alert configured to trigger on >5 failed logins from a single IP.
-*(Add your image here)*
+<img width="1920" height="1032" alt="Brute_Force_Alert_Configuration" src="https://github.com/user-attachments/assets/bd1fa45e-0b20-4298-b954-825ce778d920" />
+
 
 ### Raw Log Evidence: Brute Force
 Windows Security Event ID 4625 (Failed Logon) showing the attacker's IP and bad password attempt.
-*(Add your image here)*
+<img width="1920" height="1032" alt="Failed_Logon_Event_4625" src="https://github.com/user-attachments/assets/4595afe6-1611-4a22-8689-a2d72e9f7f37" />
+
 
 ### Raw Log Evidence: Malicious PowerShell
 Sysmon Event ID 1 capturing the hidden PowerShell execution with the -Exec Bypass flag.
-*(Add your image here)*
+<img width="1920" height="1032" alt="PowerShell_Raw_Log_Evidence" src="https://github.com/user-attachments/assets/a9c0c5bc-2483-4fc6-a5da-68ec61e780c3" />
+
 
 ---
 
