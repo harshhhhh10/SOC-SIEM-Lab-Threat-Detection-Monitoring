@@ -82,7 +82,7 @@ index=main EventCode=4625
 ```
 *(Note: Used the `coalesce` function because Windows logs are inconsistent with IP field names across different versions).*
 
-* **Action Taken:** Created a Scheduled Alert to trigger if >5 failed logins occur from a single IP within 5 minutes.
+* **Action Taken:** Created a Scheduled Alert on the failed-logon search, configured to fire and log the event when results are returned.
 
 ### Attack 2: Malicious PowerShell Execution (T1059.001)
 * **Simulation:** Executed a hidden PowerShell command simulating a fileless malware downloader (`-Exec Bypass -WindowStyle Hidden`).
@@ -106,7 +106,7 @@ Real-time monitoring dashboard showing brute-force trends, top attacker IPs, and
 <img width="1920" height="1032" alt="SOC_Dashboard_Attack_Monitoring" src="https://github.com/user-attachments/assets/3d8fd0a6-4948-4082-bac7-978b06252f89" />
 
 ### Alert Configuration
-Automated Brute Force detection alert configured to trigger on >5 failed logins from a single IP.
+Automated alert configured on the brute-force detection search to log matching events.
 <img width="1920" height="1032" alt="Brute_Force_Alert_Configuration" src="https://github.com/user-attachments/assets/bd1fa45e-0b20-4298-b954-825ce778d920" />
 
 ### Raw Log Evidence: Brute Force
